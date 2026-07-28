@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 export const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -15,13 +17,15 @@ export const authenticate = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = decoded;
+
+    return next();
+
   } catch (error) {
     console.error(error);
 
     return res.status(401).json({
       message: "Unauthorized",
     });
+    
   }
-
-  next();
 };

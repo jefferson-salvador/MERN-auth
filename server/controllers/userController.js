@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { promises as fs } from "fs";
+import path from "path";
 
 export const signUp = async (req, res) => {
   const { name, username, password } = req.body;
@@ -90,10 +92,10 @@ export const login = async (req, res) => {
 };
 
 export const updateProfile = async (req, res) => {
-  const { name, email } = req.body;
+  const { name } = req.body;
   const userId = req.user.userId;
 
-  if (!name || !email) {
+  if (!name) {
     return res.status(400).json({
       message: "Name and email are required",
     });
@@ -102,8 +104,8 @@ export const updateProfile = async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { name, email },
-      { new: true }
+      { name },
+      { new: true },
     );
 
     if (!updatedUser) {
@@ -114,13 +116,122 @@ export const updateProfile = async (req, res) => {
 
     return res.status(200).json({
       message: "Profile updated successfully",
-      user: updatedUser,
+      user: {
+        name: updatedUser.name,
+        username: updatedUser.username,
+        email: updatedUser.email,
+      },
     });
   } catch (error) {
     console.error(error);
 
     return res.status(500).json({
       message: "Error updating profile",
+    });
+  }
+};
+
+export const getProfile = async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Profile retrieved successfully",
+      user: {
+        name: user.name,
+        username: user.username,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Error retrieving profile",
+    });
+  }
+};
+
+export const uploadResume = async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        message: "Resume is requiredd",
+      });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    if (user.resumePath) {
+      try {
+        await fs.unlink(user.resumePath);
+      } catch (error) {
+        console.error("Error deleting previous resume:", error);
+      }
+    }
+
+    user.resumePath = req.file.path.replace(/\\/g, "/");
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Resume uploaded successfully",
+      user: {
+        name: updatedUser.name,
+        username: updatedUser.username,
+        resumePath: updatedUser.resumePath,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Error uploading resume",
+    });
+  }
+};
+
+export const getResume = async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    if (!user.resumePath) {
+      return res.status(404).json({
+        message: "Resume not found",
+      });
+    }
+
+    const filePath = path.resolve(user.resumePath);
+
+    return res.download(filePath, `${user.username}-resume.pdf`);
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Error downloading resume",
     });
   }
 };
