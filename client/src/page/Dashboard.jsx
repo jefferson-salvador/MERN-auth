@@ -1,22 +1,29 @@
-import {useState, useEffect} from 'react';
-import api from '../services/api';
+import { useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
+import api from "../services/api";
 
 function Dashboard() {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProfile = async () => {
       try {
-        const response = await api.get('/users/profile');
+        const response = await api.get("/users/profile");
 
         setUser(response.data.user);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
+    };
 
     getProfile();
-  }, [])
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  }
 
   if (!user) {
     return <div>Loading...</div>;
@@ -25,8 +32,10 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <h2>Name: {user.name}</h2>
-      <h2>Username: {user.username}!</h2>
+      <p>Name: {user.name}</p>
+      <p>Username: {user.username}!</p>
+
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 }
