@@ -464,14 +464,18 @@ a:hover {
 
 .hero-cta {
   display: flex;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 @media (max-width: 480px) {
   .hero-cta {
     flex-direction: column;
-    gap: 12px;
   }
+}
+
+.hero-cta .btn {
+  white-space: nowrap;
 }
 
 .hero-visual {
@@ -1086,4 +1090,136 @@ a:hover {
 
 .footer-link:hover {
   color: var(--accent);
+}
+
+/* Education Section */
+.education-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.education-card {
+  background-color: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 32px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.education-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent-border);
+}
+
+.education-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .education-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.education-degree {
+  font-size: 1.35rem;
+  color: var(--text-h);
+  margin: 0;
+}
+
+.education-period {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.education-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.education-school {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-h);
+  margin: 0;
+}
+
+.education-location {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin: 0;
+}
+
+.education-description {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin: 12px 0 0;
+  line-height: 1.6;
+}
+
+.education-achievements {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.achievements-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0 0 12px 0;
+}
+
+.achievements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.achievement-item {
+  font-size: 0.95rem;
+  color: var(--text);
+  padding-left: 24px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.achievement-item::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+/* Resume Download */
+.resume-download {
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
+}
+
+.resume-download .btn {
+  gap: 8px;
+  font-size: 1rem;
+  padding: 14px 28px;
+}
+
+.download-icon {
+  flex-shrink: 0;
 }
