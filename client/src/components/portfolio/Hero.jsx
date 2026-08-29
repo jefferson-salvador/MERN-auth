@@ -52,7 +52,7 @@ const Hero = () => {
               <div className="h-px w-12 bg-zinc-300 dark:bg-zinc-700"></div>
               <span className="text-zinc-400 dark:text-zinc-600">/&gt;</span>
             </div>
-            <div className="font-mono text-[10px] tracking-widest text-zinc-400 dark:text-zinc-600 uppercase border border-zinc-200 dark:border-zinc-800 px-3 py-1 rounded-sm">
+            <div className="font-mono text-[10px] tracking-widest text-zinc-400 dark:text-zinc-600 uppercase bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1 rounded-full border border-zinc-200/50 dark:border-zinc-700/50">
               v2.0 Portfolio
             </div>
           </div>

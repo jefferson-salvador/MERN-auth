@@ -3,8 +3,8 @@ import TechBadge from "./TechBadge";
 
 const ExperienceCard = ({ project }) => {
   return (
-    <div className="p-6 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-      <h3 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-3 font-mono">
+    <div className="p-8 bg-white dark:bg-zinc-950 border border-zinc-100 dark:border-zinc-800 shadow-sm rounded-lg hover:shadow-md transition-all">
+      <h3 className="text-lg font-medium tracking-tight text-zinc-900 dark:text-zinc-100 mb-3">
         {project.name}
       </h3>
 

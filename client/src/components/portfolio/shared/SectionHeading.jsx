@@ -6,7 +6,7 @@ const SectionHeading = ({ eyebrow, title, subtitle, align = "left" }) => {
   return (
     <div className={`mb-16 flex flex-col ${alignmentClasses}`}>
       {eyebrow && (
-        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 mb-4 block font-mono" aria-hidden="true">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-zinc-400 dark:text-zinc-500 mb-6 block font-mono" aria-hidden="true">
           {eyebrow}
         </span>
       )}

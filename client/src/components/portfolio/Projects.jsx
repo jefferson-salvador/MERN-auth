@@ -25,14 +25,14 @@ const Projects = () => {
               className="group p-8 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all flex flex-col h-full relative overflow-hidden"
             >
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
+                <h3 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
                   {project.name}
                 </h3>
                 <span className="font-mono text-xs text-zinc-400 dark:text-zinc-600 select-none">
                   // 0{index + 1}
                 </span>
               </div>
-              <p className="text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed flex-1 text-sm md:text-base">
+              <p className="text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed flex-1 text-sm md:text-base font-normal">
                 {project.description}
               </p>
 
@@ -42,7 +42,7 @@ const Projects = () => {
                 ))}
               </div>
 
-              <div className="pt-6 mt-auto border-t border-zinc-200/60 dark:border-zinc-800/60 font-mono text-xs">
+              <div className="pt-6 mt-auto border-t border-zinc-100 dark:border-zinc-800 font-mono text-xs">
                 <p className="text-zinc-900 dark:text-zinc-100">
                   <span className="text-zinc-400 dark:text-zinc-500 font-normal mr-2">SYS.IMPACT:</span>
                   {project.impact}
@@ -50,7 +50,7 @@ const Projects = () => {
               </div>
 
               {/* Hover effect accent */}
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-zinc-900 dark:bg-zinc-100 transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
+              <div className="absolute bottom-0 left-0 w-full h-[1px] bg-zinc-200 dark:bg-zinc-700 transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100 group-hover:bg-zinc-900 dark:group-hover:bg-zinc-100"></div>
             </motion.div>
           ))}
         </div>
