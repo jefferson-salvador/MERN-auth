@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { motion } from "motion/react";
 import emailjs from "@emailjs/browser";
 import SectionHeading from "./shared/SectionHeading";
 
@@ -33,7 +34,6 @@ const Contact = () => {
   };
 
   const validateForm = () => {
-    // Check for empty fields
     if (!formData.name.trim() || !formData.email.trim() || !formData.subject.trim() || !formData.message.trim()) {
       setStatus({
         type: "error",
@@ -42,7 +42,6 @@ const Contact = () => {
       return false;
     }
 
-    // Validate name length
     if (formData.name.trim().length < 2 || formData.name.trim().length > 100) {
       setStatus({
         type: "error",
@@ -51,7 +50,6 @@ const Contact = () => {
       return false;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       setStatus({
@@ -61,7 +59,6 @@ const Contact = () => {
       return false;
     }
 
-    // Validate subject length
     if (formData.subject.trim().length < 3 || formData.subject.trim().length > 200) {
       setStatus({
         type: "error",
@@ -70,7 +67,6 @@ const Contact = () => {
       return false;
     }
 
-    // Validate message length
     if (formData.message.trim().length < 10 || formData.message.trim().length > 2000) {
       setStatus({
         type: "error",
@@ -79,7 +75,6 @@ const Contact = () => {
       return false;
     }
 
-    // Check for spam patterns
     const spamKeywords = ['viagra', 'casino', 'lottery', 'prize', 'click here', 'buy now'];
     const messageContent = (formData.message + formData.subject).toLowerCase();
     const hasSpam = spamKeywords.some(keyword => messageContent.includes(keyword));
@@ -92,7 +87,6 @@ const Contact = () => {
       return false;
     }
 
-    // Check for excessive links
     const linkCount = (formData.message.match(/https?:\/\//gi) || []).length;
     if (linkCount > 3) {
       setStatus({
@@ -108,10 +102,9 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Rate limiting: 60 seconds cooldown between submissions
     const now = Date.now();
     const timeSinceLastSubmit = now - lastSubmitTime.current;
-    const cooldownPeriod = 60000; // 60 seconds
+    const cooldownPeriod = 60000;
 
     if (timeSinceLastSubmit < cooldownPeriod && lastSubmitTime.current !== 0) {
       const remainingTime = Math.ceil((cooldownPeriod - timeSinceLastSubmit) / 1000);
@@ -152,7 +145,6 @@ const Contact = () => {
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
 
-      // Close modal after 2 seconds on success
       setTimeout(() => {
         closeModal();
         setCooldown(false);
@@ -170,70 +162,88 @@ const Contact = () => {
 
   return (
     <>
-      <section id="contact" className="section contact-section">
-        <div className="section-container">
-          <SectionHeading number="05" title="Get In Touch" />
+      <section id="contact" className="py-24 md:py-32">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          <SectionHeading eyebrow="Contact" title="Get In Touch" align="center" />
 
-          <div className="contact-content">
-            <p className="contact-intro">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center text-center"
+          >
+            <p className="text-xl text-zinc-600 dark:text-zinc-400 mb-12 max-w-2xl">
               I'm always open to discussing new projects, creative ideas, or
               opportunities to be part of your vision.
             </p>
 
-            <div className="contact-details">
-              <div className="contact-item">
-                <span className="contact-label">Email</span>
+            <div className="flex flex-col sm:flex-row gap-8 mb-16 w-full max-w-2xl">
+              <div className="flex-1 p-8 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm text-center">
+                <span className="block text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-3">
+                  Email
+                </span>
                 <a
                   href="mailto:jeffsalvador.dev@gmail.com"
-                  className="contact-link"
+                  className="text-lg font-medium text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-400 break-all transition-colors"
                 >
                   jeffsalvador.dev@gmail.com
                 </a>
               </div>
 
-              <div className="contact-item">
-                <span className="contact-label">GitHub</span>
+              <div className="flex-1 p-8 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm text-center">
+                <span className="block text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-3">
+                  GitHub
+                </span>
                 <a
                   href="https://github.com/jefferson-salvador"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="contact-link"
+                  className="text-lg font-medium text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors"
                 >
                   github.com/jefferson-salvador
                 </a>
               </div>
             </div>
 
-            <p className="contact-cta">Let's build something great together.</p>
+            <p className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-8">
+              Let's build something great together.
+            </p>
 
             <button
               onClick={openModal}
-              className="btn btn-primary contact-btn"
+              className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-zinc-100 dark:text-zinc-900 font-medium rounded-sm transition-all w-full sm:w-auto"
             >
               Send Me a Message
             </button>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3 className="modal-title">Send Message</h3>
+        <div className="fixed inset-0 bg-zinc-950/80 backdrop-blur-sm flex items-center justify-center z-[1000] p-4 md:p-8" onClick={closeModal}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-sm p-8 md:p-12 max-w-2xl w-full shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-8 pb-6 border-b border-zinc-200 dark:border-zinc-800">
+              <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Send Message</h3>
               <button
                 onClick={closeModal}
-                className="modal-close"
+                className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-sm transition-colors"
                 aria-label="Close modal"
               >
-                ×
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="contact-form">
-              <div className="form-group">
-                <label htmlFor="name" className="form-label">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="name" className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
                   Name
                 </label>
                 <input
@@ -243,13 +253,13 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="form-input"
+                  className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 transition-colors"
                   placeholder="Your name"
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
                   Email
                 </label>
                 <input
@@ -259,13 +269,13 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="form-input"
+                  className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 transition-colors"
                   placeholder="your.email@example.com"
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="subject" className="form-label">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="subject" className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
                   Subject
                 </label>
                 <input
@@ -275,13 +285,13 @@ const Contact = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="form-input"
+                  className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 transition-colors"
                   placeholder="What's this about?"
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="message" className="form-label">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="message" className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
                   Message
                 </label>
                 <textarea
@@ -293,16 +303,20 @@ const Contact = () => {
                   minLength={10}
                   maxLength={2000}
                   rows="6"
-                  className="form-textarea"
+                  className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 transition-colors resize-y min-h-[120px] leading-relaxed"
                   placeholder="Your message..."
                 />
-                <span className="form-hint">
+                <span className="text-right text-xs text-zinc-400 font-mono mt-1">
                   {formData.message.length}/2000 characters
                 </span>
               </div>
 
               {status.message && (
-                <div className={`form-status ${status.type}`}>
+                <div className={`p-4 text-sm text-center rounded-sm ${
+                  status.type === "success"
+                    ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                    : "bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400"
+                }`}>
                   {status.message}
                 </div>
               )}
@@ -310,12 +324,12 @@ const Contact = () => {
               <button
                 type="submit"
                 disabled={isSubmitting || cooldown}
-                className="btn btn-primary contact-btn"
+                className="mt-2 p-4 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-zinc-100 dark:text-zinc-900 font-medium rounded-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </button>
             </form>
-          </div>
+          </motion.div>
         </div>
       )}
     </>

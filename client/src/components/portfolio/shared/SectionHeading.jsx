@@ -1,15 +1,19 @@
 import React from "react";
 
-const SectionHeading = ({ number, title, subtitle }) => {
+const SectionHeading = ({ eyebrow, title, subtitle, align = "left" }) => {
+  const alignmentClasses = align === "center" ? "items-center text-center" : "items-start text-left";
+
   return (
-    <div className="section-heading-container">
-      {number && (
-        <span className="section-number" aria-hidden="true">
-          {number} //
+    <div className={`mb-16 flex flex-col ${alignmentClasses}`}>
+      {eyebrow && (
+        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 mb-4 block font-mono" aria-hidden="true">
+          {eyebrow}
         </span>
       )}
-      <h2 className="section-title">{title}</h2>
-      {subtitle && <p className="section-subtitle">{subtitle}</p>}
+      <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-100 mb-4">
+        {title}
+      </h2>
+      {subtitle && <p className={`text-xl text-zinc-500 dark:text-zinc-400 leading-relaxed ${align === "center" ? "max-w-2xl" : "max-w-2xl"}`}>{subtitle}</p>}
     </div>
   );
 };
